@@ -8,4 +8,4 @@ local composer = require("composer")
 
 --local composer = require("gameplay")
 
-composer.gotoScene("menuScene" ,{effect ="fade" , time=500})
+composer.gotoScene("classes.menuScene" ,{effect ="fade" , time=500})

@@ -8,16 +8,21 @@ local h = display.contentHeight -- altura da tela
 local button
 
 function iniciarGame()
-    composer.gotoScene("gameplay")
+    composer.gotoScene("classes.gameplay")
 end
+-- local function gotoScore(event)
+--    if event.phase == "ended" then
+--       composer.gotoScene("scenes.score")
+--    end
+-- end
+-- local function exitGame(event)
+--    if event.phase == "ended" then
+--       os.exit()
+--    end
+-- end
 
-function scene:create( event ) -- criar
-
+function scene:create(event)
     local sceneGroup = self.view
-	--local freeMemory
-	--menuGroup = display.newGroup()
-
-	--sceneGroup:insert(menuGroup)
 
 	local background = display.newImage(sceneGroup ,"Images/etzin.jpg", w, h)-- ADCIONAR BACKGROUND ESTELAR!
 	background.x = w * .5
@@ -30,7 +35,7 @@ function scene:create( event ) -- criar
 	title.x = w * .5
 	title.y = 30
 
-	button = display.newImageRect(sceneGroup, "Images/button_play.png", 150, 50 )
+	button = display.newImageRect(sceneGroup, "Images/button_play.png", 100, 35 )
 	button.x = w *.5 
 	button.y = h *.6 
 	button.myName = "play"
@@ -43,7 +48,7 @@ function scene:create( event ) -- criar
 	sceneGroup:insert(buttonText)
 	self.buttonText = buttonText
 
-	local button2 = display.newImageRect(sceneGroup, "Images/button_play.png", 150, 50 )
+	local button2 = display.newImageRect(sceneGroup, "Images/button_play.png", 100, 35 )
 	button2.x = w *.5 
 	button2.y = button.y + button.height*.5 + 40
 	sceneGroup:insert(button2)
@@ -55,60 +60,34 @@ function scene:create( event ) -- criar
 	sceneGroup:insert(buttonText)
 	self.button2 = button2
 
-	-- touchEvent = function(event)
-	-- 	local t = event.target
-	-- 	if t.myName == "play" then 
-	-- 		freeMemory()--liberar memoria
-	-- 		composer.gotoScene("main")
-	-- 	end
-	-- end
-
-	-- freeMemory = function()
-	-- 	display.remove(group)
-	-- 	localGroup = nil 
-	-- end
-
-	button:addEventListener("tap", iniciarGame )
-
-	-- menuGroup:insert(background)
-	-- menuGroup:insert(title)
-	-- menuGroup:insert(button)
-	-- menuGroup:insert(buttonText)
+	button:addEventListener("tap", iniciarGame)
 end
 
-function scene:show( event ) -- mostrar
-
+function scene:show(event)
 	local phase = event.phase
-	local cenaAnterior = composer.getSceneName( "previous" )
-    if cenaAnterior~=nil then
-        composer.removeScene(cenaAnterior)
-    end
+	-- local cenaAnterior = composer.getSceneName( "previous" )
+ --    if cenaAnterior~=nil then
+ --        composer.removeScene(cenaAnterior)
+ --    end
 	--if  phase == "will"  then -- Código aqui é executado quando a cena ainda está fora da tela (mas está prestes a entrar)
    	 
 	--local group = self.view
-   	if ( phase == "did" ) then -- O código aqui é executado quando a cena está totalmente na tela()
-   		button:addEventListener("tap",iniciarGame)-- colocar um efeito na transição de cena
+   	if (phase == "did") then -- O código aqui é executado quando a cena está totalmente na tela()
+   		--button:addEventListener("tap",iniciarGame)-- colocar um efeito na transição de cena
  		
     end
-
-
 end
 
-function scene:hide( event ) -- ocultar
+function scene:hide(event) -- ocultar
 	local phase = event.phase
-    if  phase == "will"  then -- Código aqui é executado quando a cena está na tela (mas está prestes a sair da tela)
-       button:removeEventListener("tap",iniciarGame) -- aqui vamos remover o que estava na tela.
+    if  (phase == "will") then -- Código aqui é executado quando a cena está na tela (mas está prestes a sair da tela)
     --elseif ( phase == "did" ) then -- O código aqui é executado quando a cena está totalmente na tela
  
     end
-
 end
 
-
-scene:addEventListener( "create", scene )
-scene:addEventListener( "show", scene )
-scene:addEventListener( "hide", scene )
+scene:addEventListener("create", scene)
+scene:addEventListener("show", scene)
+scene:addEventListener("hide", scene)
 
 return scene
-
---lucianocljr
