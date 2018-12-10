@@ -8,6 +8,11 @@ local function iniciarGame(event)
     composer.gotoScene("classes.gameplay")
 end
 
+function score(event)
+	--composer.removeScene("classes.menuScene")
+	composer.gotoScene("classes.ranking")
+end
+
 local function exitGame(event)
        os.exit()
 end
@@ -25,38 +30,39 @@ function scene:create(event)
 	title.x = w * .5
 	title.y = 30
 
-	local button = display.newImageRect(sceneGroup, "Images/button_play.png", 100, 35 )
+	local button = display.newImageRect(sceneGroup, "Images/button_play.png", 64, 35 )
 	button.x = w *.5 
 	button.y = h *.7 
 	button.myName = "play"
 	sceneGroup:insert(button)
 
-	local buttonText = display.newText(sceneGroup, "Play", 0, 0, nil, 30 )
+	local buttonText = display.newText(sceneGroup, "Play", 0, 0, nil, 20 )
 	buttonText.x = button.x
 	buttonText.y = button.y
 	sceneGroup:insert(buttonText)
 
-	local button2 = display.newImageRect(sceneGroup, "Images/button_play.png", 100, 35 )
+	local button2 = display.newImageRect(sceneGroup, "Images/button_play.png", 64, 35 )
 	button2.x = w *.5 
 	button2.y = h * .8
 	sceneGroup:insert(button2)
 
-	local buttonText2 = display.newText(sceneGroup, "Score", 0, 0, nil, 30 )
+	local buttonText2 = display.newText(sceneGroup, "Score", 0, 0, nil, 20 )
 	buttonText2.x = button2.x
 	buttonText2.y = button2.y
 	sceneGroup:insert(buttonText2)
 
-	local button3 = display.newImageRect(sceneGroup, "Images/button_play.png", 100, 35 )
+	local button3 = display.newImageRect(sceneGroup, "Images/button_play.png", 64, 35 )
 	button3.x = w *.5 
 	button3.y = h * .9
 	sceneGroup:insert(button3)
 
-	local buttonText3 = display.newText(sceneGroup, "Exit", 0, 0, nil, 30 )
+	local buttonText3 = display.newText(sceneGroup, "Exit", 0, 0, nil, 20 )
 	buttonText3.x = button3.x
 	buttonText3.y = button3.y
 	sceneGroup:insert(buttonText3)
 
 	button:addEventListener("touch", iniciarGame)
+	button2:addEventListener("touch",score)
 	button3:addEventListener("touch", exitGame)
 end
 
@@ -67,7 +73,6 @@ function scene:show(event)
 	if  phase == "will"  then -- Código aqui é executado quando a cena ainda está fora da tela (mas está prestes a entrar)
    	 
    	elseif (phase == "did") then -- O código aqui é executado quando a cena está totalmente na tela()
-   		--button:addEventListener("tap",iniciarGame)-- colocar um efeito na transição de cena
  		
     end
 end

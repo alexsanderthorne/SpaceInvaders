@@ -1,9 +1,9 @@
 local composer = require("composer")
 local scene = composer.newScene()
 local physics = require("physics")
-physics.start()
+physics.start(true)
 physics.setGravity(0, 0)
---physics.setDrawMode("hibrid")
+--physics.setDrawMode("debug")
 
 display.setStatusBar (display.HiddenStatusBar)
 system.setIdleTimer(false) --impede a tela de apagar
@@ -15,10 +15,10 @@ local margemDireita = w - 20
 local invasorMetade = 6
 local buttons = {}
 local aliens = {}
-local balasInvasores = {}
+balasInvasores = {}
 timerTiroAliens = 0
 timermoverAliens = 0
-velocidadeAlien = 0.2
+velocidadeAlien = 0.8
 mover_navex = 0
 ajustary = h / 20--(y)
 ajustarx = 49 --(x)
@@ -29,19 +29,24 @@ function menu()
     composer.gotoScene("classes.menuScene")
 end
 
+function winner()
+	composer.gotoScene("classes.winner")
+end
+
+function GameOver()
+   composer.gotoScene("classes.gameover")
+end
+
 function loop_game()
 	--A ordem em que você adiciona coisas à cena é a ordem em que elas serão exibidas.
 	atualizar_aliens()
 	atualizar_nave()
+	gotoWinner()
 end
 
 function atualizar()
    pontosDisplay.text = "pontos : " .. pontos
    vidasDisplay.text = "vidas : " .. vidas
-end
-
-local function GameOver()
-   composer.gotoScene("classes.gameover")
 end
 
 podeAtirar = true
@@ -51,20 +56,20 @@ function onGlobalCollision(event)
          (event.object1.myName == "inimigos" and event.object2.myName == "tiroNave") or
             (event.object1.myName == "tiroNave" and event.object2.myName == "inimigos")
        then
-         pontos = pontos + 100
+         pontos = pontos + 400
 
          for i = #aliens, 1, -1 do
-            if aliens[i] == event.object1 then-- se o invasor for atingido vaza
-               table.remove(aliens, i)
-               display.remove(event.object1)--tanto o alien pode atingir o tiro
-               display.remove(event.object2)--quanto o tiro pode atingir o alien
-               podeAtirar = true
-            elseif aliens[i] == event.object2 then
-               table.remove(aliens, i)
-               display.remove(event.object1)
-               display.remove(event.object2)
-               podeAtirar = true
-            end
+	            if aliens[i] == event.object1 then-- se o invasor for atingido vaza
+		               table.remove(aliens, i)
+		               display.remove(event.object1)--tanto o alien pode atingir o tiro
+		               display.remove(event.object2)--quanto o tiro pode atingir o alien
+		               podeAtirar = true
+	            elseif aliens[i] == event.object2 then
+		               table.remove(aliens, i)
+		               display.remove(event.object1)
+		               display.remove(event.object2)
+		               podeAtirar = true
+	            end
          end
       elseif
          (event.object1.myName == "nave" and event.object2.myName == "tiroAlien") or
@@ -86,11 +91,13 @@ function onGlobalCollision(event)
          (event.object1.myName == "inimigos" and event.object2.myName == "nave") or
             (event.object1.myName == "nave" and event.object2.myName == "inimigos")
        then
+
 	       for i = #aliens, 1, -1 do
 		       	if aliens[i] == event.object1 then
-			       	table.remove(aliens, i)
-			       	display.remove(event.object1)
-			     end
+				       	table.remove(aliens, i)
+				       	display.remove(event.object1)
+				end
+			     
 		    end
 		         vidas = vidas - 1
 		
@@ -100,6 +107,12 @@ function onGlobalCollision(event)
 	   if vidas <= 0 then
 	      GameOver()
 	   end
+end
+
+function gotoWinner()
+	if pontos >= 2400 then
+		winner()
+	end
 end
 
 function tiro_nave(event)
@@ -161,7 +174,7 @@ end
 
 function criar_aliens(event)
 	local group = display.newGroup()
-		for i=1,35 do
+		for i=1,24 do
 
 		aliens[i] = display.newImageRect("Images/Enemy.png",27,27)
 		aliens[i].x = ajustarx
@@ -172,7 +185,7 @@ function criar_aliens(event)
 		aliens[i].myName = "inimigos"
 		ajustary = ajustary + 30
 
-			if i % 5 == 0 then
+			if i % 4 == 0 then
 					
 			ajustarx = ajustarx + 36
 			ajustary = h / 20
@@ -199,6 +212,12 @@ function tiro_aliens(event)
 	        table.insert(balasInvasores, TiroAlien) 
 	    	end
 	    end
+end
+
+function remove_tiro()
+	for i=1,#balasInvasores do
+		display.remove(balasInvasores[i])
+	end
 end
 
 function mover_aliens()
@@ -261,6 +280,8 @@ function scene:show(event)
 		physics.addBody(player,"dinamic")
 		sceneGroup:insert(player)
 
+      	elseif phase == "did" then
+      	physics.start()
 		buttons[1] = display.newImage("Images/button.png")
 		buttons[1].x = 30
 		buttons[1].y = 470
@@ -287,11 +308,10 @@ function scene:show(event)
 			buttons[j]:addEventListener("touch", mover_nave)
 		end
 		buttons[3]:addEventListener("touch",tiro_nave)
-      	elseif phase == "did" then
-      	physics.start()
+		
  		Runtime:addEventListener("enterFrame",loop_game)--singleton
  		Runtime:addEventListener("collision", onGlobalCollision)
-		timerTiroAliens = timer.performWithDelay( 2500, tiro_aliens, -1)
+		timerTiroAliens = timer.performWithDelay( 500, tiro_aliens, -1)
 		timermoverAliens = timer.performWithDelay(velocidadeAlien,mover_aliens,-1)
     	end
 end
@@ -301,10 +321,13 @@ function scene:hide(event)--quando você remove um objeto do Display, ele deve s
 	local sceneGroup = self.view
 
 	if  phase == "will"  then 
-		--pontos = nil
+   		remove_tiro()
+		--pontos = -100
      elseif ( phase == "did" ) then
    		Runtime:removeEventListener("enterFrame",loop_game)--Sempre que você adicionar um ouvinte de evento, verifique se também o está removendo em algum momento mais adiante no programa.
    		Runtime:removeEventListener("collision", onGlobalCollision)
+   		Runtime:removeEventListener("enterFrame",tiro_nave)
+   		--display.remove(shot)
     end
 end
 
