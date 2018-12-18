@@ -1,11 +1,8 @@
-display.setStatusBar(display.HiddenStatusBar)-- Esconde barra de status**
+local composer = require ("composer")
+local scene = composer.newScene()
 
-math.randomseed( os.time() )
+-- local physics = require("physics")
+-- physics.start()
+-- physics.setGravity(0, 0)
 
-local composer = require("composer")
-
---local composer = require("menuScene")
-
---local composer = require("gameplay")
-
-composer.gotoScene("classes.menuScene" ,{effect ="fade" , time=500})
+composer.gotoScene("View.menuScene",{effect ="fade" , time=500})

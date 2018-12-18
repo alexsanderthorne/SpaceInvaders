@@ -6,12 +6,12 @@ local h = display.contentHeight
 
 local function iniciarGame(event)
     --composer.removeScene("gameover")
-    composer.gotoScene("classes.gameplay")
+    composer.gotoScene("View.gamePlay")
 end
 
 local function menuGame(event)
    --composer.removeScene("gameover")
-    composer.gotoScene("classes.menuScene")
+    composer.gotoScene("View.menuScene")
 end
 
 local function exitGame(event)
@@ -21,16 +21,16 @@ end
 function scene:create(event)
     local sceneGroup = self.view
 
-    local gameover = display.newImage(sceneGroup ,"Images/game-over.jpg", w, h)
+    local gameover = display.newImage(sceneGroup ,"View/Images/game-over.jpg", w, h)
     gameover.x = w * .5
     gameover.y = h * .2
     gameover:scale(0.3,0.2) --dimensões da imagem        
     sceneGroup:insert(gameover)
 
-    button = display.newImageRect(sceneGroup, "Images/button_play.png", 115, 35 )
+    button = display.newImageRect(sceneGroup, "View/Images/button_play.png", 115, 35 )
     button.x = w *.5 
     button.y = h *.6 
-    button.myName = "newGame"
+    --button.myName = "newGame"
     sceneGroup:insert(button)
 
     local buttonText = display.newText(sceneGroup, "newGame", 0, 0, nil, 20 )
@@ -38,7 +38,7 @@ function scene:create(event)
     buttonText.y = button.y
     sceneGroup:insert(buttonText)
 
-    local button2 = display.newImageRect(sceneGroup, "Images/button_play.png", 72, 35 )
+    local button2 = display.newImageRect(sceneGroup, "View/Images/button_play.png", 72, 35 )
     button2.x = w *.5 
     button2.y = h * .75
     sceneGroup:insert(button2)
@@ -48,7 +48,7 @@ function scene:create(event)
     buttonText2.y = button2.y
     sceneGroup:insert(buttonText2)
 
-    local button3 = display.newImageRect(sceneGroup, "Images/button_play.png", 45, 35 )
+    local button3 = display.newImageRect(sceneGroup, "View/Images/button_play.png", 45, 35 )
     button3.x = w *.5 
     button3.y = h * .9
     sceneGroup:insert(button3)
@@ -70,7 +70,7 @@ function scene:show(event)
     if ( phase == "will" ) then
  
     elseif ( phase == "did" ) then
-    composer.removeScene("classes.gameplay" )-- nova cena prestes a entrar
+    composer.removeScene("View.gamePlay" )-- nova cena prestes a entrar
     composer.setVariable( "pontos", 0 )
     local pontosAtuais = composer.getVariable( "pontos" )
 

@@ -1,16 +1,20 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
+---local score = require("View.score")
 
-local w = display.contentWidth -- representa a largura da tela
-local h = display.contentHeight -- altura da tela
+local w = display.contentWidth
+local h = display.contentHeight
 
-local function iniciarGame(event)
-    composer.gotoScene("classes.gameplay")
+function iniciarGame(event)
+	if event.phase == "ended" then
+    composer.gotoScene("View.gamePlay")
+	end
 end
 
 function score(event)
-	--composer.removeScene("classes.menuScene")
-	composer.gotoScene("classes.ranking")
+if event.phase == "ended" then	--score:atualizarPontuacao(pontos)
+	composer.gotoScene("View.ranking")
+end
 end
 
 local function exitGame(event)
@@ -20,17 +24,17 @@ end
 function scene:create(event)
     local sceneGroup = self.view
 
-	local background = display.newImage(sceneGroup ,"Images/etzin.jpg", w, h)
+	local background = display.newImage(sceneGroup ,"View/Images/etzin.jpg", w, h)
 	background.x = w * .5
 	background.y = h * .6
 	background:scale(1.3,1.5) --dimensões da imagem        
 	sceneGroup:insert(background)
 
-	local title = display.newImageRect(sceneGroup, "Images/Space_Invaders.jpg", 310, 55)
+	local title = display.newImageRect(sceneGroup, "View/Images/Space_Invaders.jpg", 310, 55)
 	title.x = w * .5
 	title.y = 30
 
-	local button = display.newImageRect(sceneGroup, "Images/button_play.png", 64, 35 )
+	local button = display.newImageRect(sceneGroup, "View/Images/button_play.png", 64, 35 )
 	button.x = w *.5 
 	button.y = h *.7 
 	button.myName = "play"
@@ -41,7 +45,7 @@ function scene:create(event)
 	buttonText.y = button.y
 	sceneGroup:insert(buttonText)
 
-	local button2 = display.newImageRect(sceneGroup, "Images/button_play.png", 64, 35 )
+	local button2 = display.newImageRect(sceneGroup, "View/Images/button_play.png", 64, 35 )
 	button2.x = w *.5 
 	button2.y = h * .8
 	sceneGroup:insert(button2)
@@ -51,7 +55,7 @@ function scene:create(event)
 	buttonText2.y = button2.y
 	sceneGroup:insert(buttonText2)
 
-	local button3 = display.newImageRect(sceneGroup, "Images/button_play.png", 64, 35 )
+	local button3 = display.newImageRect(sceneGroup, "View/Images/button_play.png", 64, 35 )
 	button3.x = w *.5 
 	button3.y = h * .9
 	sceneGroup:insert(button3)
