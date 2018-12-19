@@ -12,7 +12,7 @@ db:exec( criarJogador )
   db:exec(inserir)
 
   --   local remover = [[DELETE FROM jogador]]
-  -- db:exec(remover)
+  -- db:exec(remover) 
 
 function score:atualizarPontuacao(novaPontuacao)
 

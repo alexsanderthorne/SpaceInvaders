@@ -61,7 +61,7 @@ function colisaoGlobal(event)
          (event.object1.myName == "inimigos" and event.object2.myName == "tiroNave") or
             (event.object1.myName == "tiroNave" and event.object2.myName == "inimigos")
        then
-         pontos = pontos + 200
+         pontos = pontos + 100
 
          for i = #aliens, 1, -1 do
 	            if aliens[i] == event.object1 then-- se o invasor for atingido vaza
@@ -117,7 +117,7 @@ end
 
 function gotoWinner()
 	atualizar()
-	if pontos >= 2000 then
+	if pontos >= 2400 then
 		winner()
 	end
 end
@@ -316,7 +316,7 @@ function scene:show(event)
  		Runtime:addEventListener("enterFrame",loop_game)--singleton
  		Runtime:addEventListener("collision", colisaoGlobal)
  		Runtime:addEventListener("accelerometer",naveAccelerate)
-		timerTiroAliens = timer.performWithDelay( 2500, tiroAliens, -1)
+		timerTiroAliens = timer.performWithDelay( 1000, tiroAliens, -1)
 		timermoverAliens = timer.performWithDelay(velocidadeAlien,moverAliens,-1)
     	end
 end
