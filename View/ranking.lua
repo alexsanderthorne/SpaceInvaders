@@ -22,15 +22,13 @@ end
 function scene:create( event )
     
     local sceneGroup = self.view
-    
-    print(score:getPontuacao())
-    local textoPontuacao = display.newText(score:getPontuacao(),0 , 0 , nil , 50 )
-    textoPontuacao.x = w * .5
-    textoPontuacao.y = h * .4
-    textoPontuacao:setFillColor( 1, 1, 1 )
-    sceneGroup:insert(textoPontuacao)
 
-    button = display.newImageRect(sceneGroup, "View/Images/button_play.png", 114, 35 )
+    local etScore = display.newImageRect(sceneGroup, "View/Images/etScore.jpg", 124, 86 )
+    etScore.x = w *.55
+    etScore.y = h *.3
+    sceneGroup:insert(etScore)
+
+    local button = display.newImageRect(sceneGroup, "View/Images/button_play.png", 114, 35 )
     button.x = w *.5 
     button.y = h *.6 
     sceneGroup:insert(button)
@@ -63,7 +61,6 @@ function scene:create( event )
     button:addEventListener("touch", iniciarGame)
     button2:addEventListener("touch", menuGame)
     button3:addEventListener("touch",exitGame)
- 
 end
 
 function scene:show(event)
@@ -73,6 +70,12 @@ function scene:show(event)
     if ( phase == "will" ) then
  
     elseif ( phase == "did" ) then
+    print(score:getPontuacao())
+    local textoPontuacao = display.newText("Maior Pontuação : " .. score:getPontuacao(),0 , 0 , nil , 17 )
+    textoPontuacao.x = w * .5
+    textoPontuacao.y = h * .1
+    textoPontuacao:setFillColor( 1, 0, 0 )
+    sceneGroup:insert(textoPontuacao)
     composer.removeScene("View.menuScene" )-- nova scene prestes a entrar
     -- composer.setVariable( "pontos", 0 )
     -- local pontosAtuais = composer.getVariable( "pontos" )
@@ -84,11 +87,9 @@ function scene:hide(event)
     local phase = event.phase
  
     if ( phase == "will" ) then
-    composer.loadScene( "View.menuScene" )
-    --composer.removeScene( "classes.gameplay", true )
+    
     elseif ( phase == "did" ) then
-    -- local gameplay = composer.getScene("classes.gameplay")
-    -- gameplay.getatualizar()
+    
     end
 end
   

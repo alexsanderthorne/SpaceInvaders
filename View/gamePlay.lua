@@ -21,16 +21,17 @@ timermoverAliens = 0
 local margemEsquerda = 20
 local margemDireita = w - 20
 local invasorMetade = 6
-velocidadeAlien = 0.8
+velocidadeAlien = 1
 mover_navex = 0
 ajustary = h / 20
 ajustarx = 49
 pontos = 0
 vidas = 3
  
--- function menu()
---     composer.gotoScene("View.menuScene")
--- end
+function menu()
+	composer.removeScene("View.gamPlay")
+    composer.gotoScene("View.menuScene")
+end
 
 function winner()
 	--score:atualizarPontuacao(pontos)
@@ -60,7 +61,7 @@ function colisaoGlobal(event)
          (event.object1.myName == "inimigos" and event.object2.myName == "tiroNave") or
             (event.object1.myName == "tiroNave" and event.object2.myName == "inimigos")
        then
-         pontos = pontos + 800
+         pontos = pontos + 200
 
          for i = #aliens, 1, -1 do
 	            if aliens[i] == event.object1 then-- se o invasor for atingido vaza
@@ -116,7 +117,7 @@ end
 
 function gotoWinner()
 	atualizar()
-	if pontos == 9600 then
+	if pontos >= 2000 then
 		winner()
 	end
 end
@@ -171,10 +172,7 @@ function touchNave(event) --ctrl+d para mudar todas as váriáveis de uma só ve
 		if event.target.myName == "direita" then
 			mover_navex = 5
 		elseif event.target.myName == "esquerda" then
-	print("testando")		
 			mover_navex = -5
-		elseif event.target.myName == "atacar" then
-			print("pei")
 		end
 	else 
 		mover_navex = 0
@@ -192,17 +190,23 @@ function atualizarPosicaoNave()
 	end
 end
 
-function criar_aliens(event)
+local function naveAccelerate(event)--acelerometro funcionando *_*
+	if newNave.naveImage.x ~= nil  then
+    newNave.naveImage.x = newNave.naveImage.x + event.xGravity*50--zGravity não é,yGravity tbm não
+	end
+end
+  
+function aliens:criarAliens(event)
 	local group = display.newGroup()
 		for i=1,24 do
 
-		aliens[i] = display.newImageRect("View/Images/Enemy.png",27,27)
-		aliens[i].x = ajustarx
-		aliens[i].y = ajustary 
-		aliens[i].i = i
-		physics.addBody( aliens[i], "dynamic" )
-		group:insert(aliens[i])
-		aliens[i].myName = "inimigos"
+		self[i] = display.newImageRect("View/Images/Enemy.png",27,27)
+		self[i].x = ajustarx
+		self[i].y = ajustary 
+		self[i].i = i
+		physics.addBody( self[i], "dynamic" )
+		group:insert(self[i])
+		self[i].myName = "inimigos"
 		ajustary = ajustary + 30
 
 			if i % 4 == 0 then
@@ -251,24 +255,12 @@ function moverAliens()
     	end
      end
     if mudaDirecao == true then
-        velocidadeAlien = velocidadeAlien*-1--mover ao contrário
+        velocidadeAlien = velocidadeAlien*-1
         for j = 1, #aliens do
             aliens[j].y = aliens[j].y + 36
         end
         mudaDirecao = false;
     end 
-end
-
-function atualizar_aliens()
-	for i=1,#aliens do
-		if aliens[i].width ~= nil  then
-		if aliens[i].x <= aliens[i].width * 0.5 then 
-			aliens[i].x = aliens[i].width * 0.5
-		elseif aliens[i].x >= w - aliens[i].width * 0.5 then 
-			aliens[i].x = w - aliens[i].width * 0.5
-		end
-		end
-	end
 end
 
 function scene:create(event)
@@ -292,10 +284,11 @@ function scene:show(event)
 	  
     	pontos = 0
     	
-   		sceneGroup:insert(criar_aliens())
+   		sceneGroup:insert(aliens:criarAliens())
    		criarNave()
 
       	elseif phase == "did" then
+
       	physics.start()
 		buttons[1] = display.newImage(group,"View/Images/button.png")
 		buttons[1].x = 30
@@ -312,19 +305,18 @@ function scene:show(event)
 		buttons[3]:setFillColor(1,0,0)
 		buttons[3].x = 260
 		buttons[3].y = 470
-		buttons[3].myName = "atacar"
 		buttons[3].rotation = -90
 
 		local j=1  
 		for j=1, 2 do 
-			print("tnc")
 			buttons[j]:addEventListener("touch", touchNave)
 		end
 		buttons[3]:addEventListener("touch",tiroNave)
 		
  		Runtime:addEventListener("enterFrame",loop_game)--singleton
  		Runtime:addEventListener("collision", colisaoGlobal)
-		timerTiroAliens = timer.performWithDelay( 4500, tiroAliens, -1)
+ 		Runtime:addEventListener("accelerometer",naveAccelerate)
+		timerTiroAliens = timer.performWithDelay( 2500, tiroAliens, -1)
 		timermoverAliens = timer.performWithDelay(velocidadeAlien,moverAliens,-1)
     	end
 end
@@ -335,12 +327,11 @@ function scene:hide(event)--quando você remove um objeto do Display, ele deve s
 
 	if  phase == "will"  then 
    		removeTiroAliens()
-		--pontos = -100
      elseif ( phase == "did" ) then
    		Runtime:removeEventListener("enterFrame",loop_game)--Sempre que você adicionar um ouvinte de evento, verifique se também o está removendo em algum momento mais adiante no programa.
    		Runtime:removeEventListener("collision", colisaoGlobal)
+   		Runtime:removeEventListener("accelerometer",naveAccelerate)
    		Runtime:removeEventListener("enterFrame",tiroNave)
-   		--display.remove(shot)
     end
 end
 

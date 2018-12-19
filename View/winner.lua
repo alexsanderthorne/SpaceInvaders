@@ -73,8 +73,8 @@ function scene:show(event)
  
     elseif ( phase == "did" ) then
     composer.removeScene("View.gamePlay" )-- nova cena prestes a entrar
-    composer.setVariable( "pontos", 0 )
-    local pontosAtuais = composer.getVariable( "pontos" )
+    -- composer.setVariable( "pontos", 0 )
+    -- local pontosAtuais = composer.getVariable( "pontos" )
     -- composer.setVariable( "velocidadeAlien", 0)
     -- local velocidadeAlienAtual = composer.getVariable( "velocidadeAlien" )
     end

@@ -3,23 +3,16 @@ local path = system.pathForFile( "data.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 local score = {}
 
-
 local criarJogador = [[CREATE TABLE IF NOT EXISTS jogador (Pontuacao INTEGER);]]
 print(criarJogador)
 db:exec( criarJogador )
 
-local inserir = [[INSERT INTO jogador (Pontuacao) VALUES (0);]]
-print(inserir)
-db:exec(inserir)
+  local inserir = [[INSERT INTO jogador (Pontuacao) VALUES (0);]]
+  print(inserir)
+  db:exec(inserir)
 
--- local remover = [[DELETE FROM jogador]]
--- db:exec(remover)
-
--- db:exec[=[
---           CREATE TABLE jogador (Pontuacao);
---           INSERT INTO jogador VALUES(Pontuacao);
---         ]=]
-
+  --   local remover = [[DELETE FROM jogador]]
+  -- db:exec(remover)
 
 function score:atualizarPontuacao(novaPontuacao)
 
@@ -35,9 +28,9 @@ function score:atualizarPontuacao(novaPontuacao)
 end
 
 function score:getPontuacao()
-  for row in db:urows('SELECT DISTINCT Pontuacao from jogador') do
-        return row
-    end
+  for row in db:urows('SELECT Pontuacao from jogador') do
+    return row
+  end
     return 0
 end 
 
@@ -49,4 +42,3 @@ function score:fecharBanco()
 end
 
 return score
-
