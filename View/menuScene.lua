@@ -77,7 +77,9 @@ function scene:show(event)
 	if  phase == "will"  then -- Código aqui é executado quando a cena ainda está fora da tela (mas está prestes a entrar)
    	 
    	elseif (phase == "did") then -- O código aqui é executado quando a cena está totalmente na tela()
- 		
+ 		composer.removeScene("View.gamePlay" )
+ 		composer.setVariable( "pontos", 0 )
+    local pontosAtuais = composer.getVariable( "pontos" )
     end
 end
 
@@ -88,7 +90,7 @@ function scene:hide(event) -- ocultar
     if  (phase == "will") then -- Código aqui é executado quando a cena está na tela (mas está prestes a sair da tela)
     
     elseif ( phase == "did" ) then -- O código aqui é executado quando a cena está totalmente na tela
-    
+    --composer.loadScene("View.gamePlay")
     end
 end
 

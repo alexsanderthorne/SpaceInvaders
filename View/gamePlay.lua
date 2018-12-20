@@ -21,7 +21,7 @@ timermoverAliens = 0
 local margemEsquerda = 20
 local margemDireita = w - 20
 local invasorMetade = 6
-velocidadeAlien = 1
+velocidadeAlien = 0.4
 mover_navex = 0
 ajustary = h / 20
 ajustarx = 49
@@ -29,7 +29,7 @@ pontos = 0
 vidas = 3
  
 function menu()
-	composer.removeScene("View.gamPlay")
+	--composer.removeScene("View.gamePlay")
     composer.gotoScene("View.menuScene")
 end
 
@@ -108,7 +108,26 @@ function colisaoGlobal(event)
 		         newNave.live = newNave.live - 1
 		
 		end
+		elseif
+         (event.object1.myName == "inimigos" and event.object2.myName == "linha") or--colisão para detectar se os aliens passaram da nave e não foram destruidos por ela
+            (event.object1.myName == "linha" and event.object2.myName == "inimigos")
+       then
+
+         for i = #aliens, 1, -1 do
+	            if aliens[i] == event.object1 then
+		               table.remove(aliens, i)
+		               display.remove(event.object1)
+	            elseif aliens[i] == event.object2 then
+		               table.remove(aliens, i)
+		               display.remove(event.object2)
+	            end
+	            if aliens[i] == nil then
+	            	menu()
+	            	
+	            end
+         end
 	end
+
 		atualizar()
 	   if newNave.live <= 0 then
 	      GameOver()
@@ -263,6 +282,20 @@ function moverAliens()
     end 
 end
 
+-- local function loop(event)
+-- 	--criarAliens()
+
+--    for i = #aliens, 1, -1 do
+--       if aliens[i] ~= nil then
+--          if aliens[i].y >= h / 2 + 180 then
+--             aliens[i].destroy()
+--             table.remove(aliens, i)
+--          end
+--       end
+--    end
+--    menu()
+-- end
+
 function scene:create(event)
 	local sceneGroup = self.view
 	group = display.newGroup()
@@ -286,6 +319,9 @@ function scene:show(event)
     	
    		sceneGroup:insert(aliens:criarAliens())
    		criarNave()
+   		local linha1 = display.newLine(sceneGroup , 0,575,w,575)
+		 physics.addBody(linha1,"dinamic",{isSensor = true})
+		 linha1.myName = "linha"
 
       	elseif phase == "did" then
 
@@ -316,7 +352,7 @@ function scene:show(event)
  		Runtime:addEventListener("enterFrame",loop_game)--singleton
  		Runtime:addEventListener("collision", colisaoGlobal)
  		Runtime:addEventListener("accelerometer",naveAccelerate)
-		timerTiroAliens = timer.performWithDelay( 1000, tiroAliens, -1)
+		timerTiroAliens = timer.performWithDelay( 5000, tiroAliens, -1)
 		timermoverAliens = timer.performWithDelay(velocidadeAlien,moverAliens,-1)
     	end
 end
@@ -327,7 +363,9 @@ function scene:hide(event)--quando você remove um objeto do Display, ele deve s
 
 	if  phase == "will"  then 
    		removeTiroAliens()
+   		-- composer.removeScene("View.gamePlay" )
      elseif ( phase == "did" ) then
+     	--loop()
    		Runtime:removeEventListener("enterFrame",loop_game)--Sempre que você adicionar um ouvinte de evento, verifique se também o está removendo em algum momento mais adiante no programa.
    		Runtime:removeEventListener("collision", colisaoGlobal)
    		Runtime:removeEventListener("accelerometer",naveAccelerate)

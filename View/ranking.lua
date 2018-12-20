@@ -47,7 +47,7 @@ function scene:create( event )
     buttonText2.x = button2.x
     buttonText2.y = button2.y
     sceneGroup:insert(buttonText2)
--
+
     local button3 = display.newImageRect(sceneGroup, "View/Images/button_play.png", 50, 35 )
     button3.x = w *.5 
     button3.y = h * .9
