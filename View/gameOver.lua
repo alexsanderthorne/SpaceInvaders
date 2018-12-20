@@ -5,12 +5,10 @@ local w = display.contentWidth
 local h = display.contentHeight
 
 local function iniciarGame(event)
-    --composer.removeScene("gameover")
     composer.gotoScene("View.gamePlay")
 end
 
 local function menuGame(event)
-   --composer.removeScene("gameover")
     composer.gotoScene("View.menuScene")
 end
 
@@ -30,7 +28,6 @@ function scene:create(event)
     button = display.newImageRect(sceneGroup, "View/Images/button_play.png", 115, 35 )
     button.x = w *.5 
     button.y = h *.6 
-    --button.myName = "newGame"
     sceneGroup:insert(button)
 
     local buttonText = display.newText(sceneGroup, "newGame", 0, 0, nil, 20 )

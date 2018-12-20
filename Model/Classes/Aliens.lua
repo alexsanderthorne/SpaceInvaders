@@ -1,4 +1,4 @@
-local M = {} --modulo externo
+local M = {} --implementar-modulo externo
 local aliens = {}
 
 

@@ -6,12 +6,10 @@ local w = display.contentWidth
 local h = display.contentHeight
 
 local function iniciarGame(event)
-    --composer.removeScene("winner")
     composer.gotoScene("View.gamePlay")
 end
 
 local function menuGame(event)
-   --composer.removeScene("winner")
    score:atualizarPontuacao(pontos)
     composer.gotoScene("View.menuScene")
 end
@@ -26,7 +24,7 @@ function scene:create(event)
     local winner = display.newImage(sceneGroup ,"View/Images/winner.png", w, h)
     winner.x = w * .5
     winner.y = h * .2
-    winner:scale(1,1) --dimensões da imagem        
+    winner:scale(1,1) --dimensões da imagem
     sceneGroup:insert(winner)
 
     button = display.newImageRect(sceneGroup, "View/Images/button_play.png", 114, 35 )
@@ -73,10 +71,6 @@ function scene:show(event)
  
     elseif ( phase == "did" ) then
     composer.removeScene("View.gamePlay" )-- nova cena prestes a entrar
-    -- composer.setVariable( "pontos", 0 )
-    -- local pontosAtuais = composer.getVariable( "pontos" )
-    -- composer.setVariable( "velocidadeAlien", 0)
-    -- local velocidadeAlienAtual = composer.getVariable( "velocidadeAlien" )
     end
 end
  
@@ -86,10 +80,8 @@ function scene:hide(event)
  
     if ( phase == "will" ) then
     composer.loadScene( "View.gamePlay" )
-    --composer.removeScene( "classes.gameplay", true )
     elseif ( phase == "did" ) then
-    -- local gameplay = composer.getScene("classes.gameplay")
-    -- gameplay.getatualizar()
+
     end
 end
  

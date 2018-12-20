@@ -6,13 +6,6 @@ function M.newNave(params)
       live = params.live,
    }
 
-   --posso criar o tiro da nave aqui e associar o touch ao botão do tiro(nova classe bulletNave)
-   -- function nave:destroy()
-   --    nave.naveImage:removeSelf()
-   --    nave = nil
-   -- end
-
-   --tiros = timer.performWithDelay(params.timeDisparos, nave.launch, 0)
    return nave
 end
 

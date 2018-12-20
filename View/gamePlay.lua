@@ -29,12 +29,10 @@ pontos = 0
 vidas = 3
  
 function menu()
-	--composer.removeScene("View.gamePlay")
     composer.gotoScene("View.menuScene")
 end
 
 function winner()
-	--score:atualizarPontuacao(pontos)
 	composer.gotoScene("View.winner")
 end
 
@@ -44,7 +42,6 @@ function GameOver()
 end
 
 function loop_game()
-	--A ordem em que você adiciona coisas à cena é a ordem em que elas serão exibidas.
 	atualizarPosicaoNave()
 	gotoWinner()
 end
@@ -89,9 +86,6 @@ function colisaoGlobal(event)
 	         	display.remove(event.object2)
 	         end 
          newNave.live = newNave.live - 1
-     	-- else
-     	-- 	display.remove(event.object1)
-	     --    display.remove(event.object2)
      	end
       elseif
          (event.object1.myName == "inimigos" and event.object2.myName == "defensor") or
@@ -186,7 +180,7 @@ function verificacaoGlobal()
 	end
 end
 
-function touchNave(event) --ctrl+d para mudar todas as váriáveis de uma só vez
+function touchNave(event)
 	if event.phase == "began" or event.phase == "moved" then
 		if event.target.myName == "direita" then
 			mover_navex = 5
@@ -209,9 +203,9 @@ function atualizarPosicaoNave()
 	end
 end
 
-local function naveAccelerate(event)--acelerometro funcionando *_*
+local function naveAccelerate(event)
 	if newNave.naveImage.x ~= nil  then
-    newNave.naveImage.x = newNave.naveImage.x + event.xGravity*50--zGravity não é,yGravity tbm não
+    newNave.naveImage.x = newNave.naveImage.x + event.xGravity*50
 	end
 end
   
@@ -282,20 +276,6 @@ function moverAliens()
     end 
 end
 
--- local function loop(event)
--- 	--criarAliens()
-
---    for i = #aliens, 1, -1 do
---       if aliens[i] ~= nil then
---          if aliens[i].y >= h / 2 + 180 then
---             aliens[i].destroy()
---             table.remove(aliens, i)
---          end
---       end
---    end
---    menu()
--- end
-
 function scene:create(event)
 	local sceneGroup = self.view
 	group = display.newGroup()
@@ -363,7 +343,6 @@ function scene:hide(event)--quando você remove um objeto do Display, ele deve s
 
 	if  phase == "will"  then 
    		removeTiroAliens()
-   		-- composer.removeScene("View.gamePlay" )
      elseif ( phase == "did" ) then
      	--loop()
    		Runtime:removeEventListener("enterFrame",loop_game)--Sempre que você adicionar um ouvinte de evento, verifique se também o está removendo em algum momento mais adiante no programa.

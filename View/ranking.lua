@@ -6,12 +6,10 @@ local w = display.contentWidth
 local h = display.contentHeight
 
 local function iniciarGame(event)
-    --composer.removeScene("winner")
     composer.gotoScene("View.gamePlay")
 end
 
 local function menuGame(event)
-   --composer.removeScene("winner")
     composer.gotoScene("View.menuScene")
 end
 
@@ -77,8 +75,6 @@ function scene:show(event)
     textoPontuacao:setFillColor( 1, 0, 0 )
     sceneGroup:insert(textoPontuacao)
     composer.removeScene("View.menuScene" )-- nova scene prestes a entrar
-    -- composer.setVariable( "pontos", 0 )
-    -- local pontosAtuais = composer.getVariable( "pontos" )
     end
 end
  
